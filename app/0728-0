@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#000000" />
+  <title>0728-0 Live View Design Lab</title>
+  <style>
+    :root { color-scheme: dark; font: 500 16px/1.45 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background:#050505; color:#f5f5f5; }
+    * { box-sizing:border-box; }
+    html, body { min-height:100%; margin:0; background:#050505; }
+    body { padding:clamp(16px, 4vw, 48px); background:radial-gradient(circle at 50% -10%, #272727 0, #0b0b0b 44%, #030303 100%); }
+    main { width:min(1120px, 100%); margin:0 auto; }
+    .lab-header { display:flex; justify-content:space-between; align-items:end; gap:24px; margin-bottom:24px; }
+    h1 { margin:0 0 7px; font-size:clamp(22px, 4vw, 36px); letter-spacing:.13em; }
+    p { margin:0; color:rgba(255,255,255,.54); font-size:13px; }
+    .lab-meta { color:rgba(255,255,255,.36); font-size:10px; letter-spacing:.12em; text-transform:uppercase; white-space:nowrap; }
+    .preview-stage { position:relative; min-height:260px; margin-bottom:18px; overflow:hidden; border:1px solid rgba(255,255,255,.14); border-radius:24px; background:radial-gradient(circle at 55% 46%, rgba(180,180,180,.15), transparent 18%), linear-gradient(135deg, #171717, #080808 55%, #1b1b1b); box-shadow:0 22px 60px rgba(0,0,0,.38); }
+    .preview-stage::before { content:"LIVE VIEW / AF DESIGN STUDY"; position:absolute; top:16px; left:18px; color:rgba(255,255,255,.36); font-size:10px; letter-spacing:.12em; }
+    .preview-stage::after { content:""; position:absolute; inset:18% 28%; border:1px solid rgba(255,255,255,.08); border-radius:50%; box-shadow:0 0 0 34px rgba(255,255,255,.015), 0 0 0 70px rgba(255,255,255,.012); }
+    .preview-target { position:absolute; z-index:1; left:58%; top:48%; width:72px; height:72px; border:1px solid rgba(255,255,255,.72); border-radius:50%; transform:translate(-50%,-50%); }
+    .preview-target::before, .preview-target::after { content:""; position:absolute; background:rgba(255,255,255,.52); }
+    .preview-target::before { left:50%; top:-13px; width:1px; height:98px; transform:translateX(-50%); }
+    .preview-target::after { top:50%; left:-13px; width:98px; height:1px; transform:translateY(-50%); }
+    .af-grid { display:grid; grid-template-columns:repeat(5, minmax(0, 1fr)); gap:12px; }
+    .af-card { min-width:0; padding:14px; border:1px solid rgba(255,255,255,.11); border-radius:18px; background:rgba(255,255,255,.025); transition:transform 160ms ease, border-color 160ms ease, background 160ms ease; }
+    .af-card.is-selected { border-color:rgba(255,255,255,.48); background:rgba(255,255,255,.075); transform:translateY(-4px); }
+    .af-card h2 { margin:0 0 4px; font-size:12px; letter-spacing:.06em; }
+    .af-card p { min-height:38px; font-size:11px; line-height:1.45; }
+    .af-button { position:relative; display:grid; place-items:center; width:100%; aspect-ratio:1; margin:16px 0 12px; border:0; color:#fff; background:transparent; cursor:pointer; touch-action:manipulation; }
+    .af-button:active { transform:scale(.95); }
+    .af-button span { position:relative; z-index:2; font-size:11px; font-weight:750; letter-spacing:.1em; }
+    .af-button small { position:relative; z-index:2; margin-top:4px; color:rgba(255,255,255,.56); font-size:8px; letter-spacing:.12em; }
+    .af-optical::before { content:""; position:absolute; inset:16%; border:1px solid rgba(255,255,255,.72); border-radius:50%; box-shadow:0 0 0 8px rgba(255,255,255,.035), 0 0 0 18px rgba(255,255,255,.025); }
+    .af-optical::after { content:""; position:absolute; inset:3%; border:1px dashed rgba(255,255,255,.25); border-radius:50%; }
+    .af-glass { border:1px solid rgba(255,255,255,.26); border-radius:22px; background:linear-gradient(145deg, rgba(255,255,255,.18), rgba(255,255,255,.025)); box-shadow:inset 0 1px rgba(255,255,255,.24), 0 14px 26px rgba(0,0,0,.24); backdrop-filter:blur(8px); }
+    .af-glass::before { content:""; position:absolute; inset:7px; border:1px solid rgba(255,255,255,.12); border-radius:16px; }
+    .af-radar { border:1px solid rgba(255,255,255,.32); background:linear-gradient(90deg, transparent 49%, rgba(255,255,255,.22) 50%, transparent 51%), linear-gradient(0deg, transparent 49%, rgba(255,255,255,.22) 50%, transparent 51%); }
+    .af-radar::before { content:""; position:absolute; inset:18%; border:1px solid rgba(255,255,255,.62); border-radius:50%; }
+    .af-radar::after { content:""; position:absolute; width:9px; height:9px; border:1px solid #fff; border-radius:50%; }
+    .af-crosshair::before, .af-crosshair::after { content:""; position:absolute; background:rgba(255,255,255,.72); }
+    .af-crosshair::before { width:100%; height:1px; }
+    .af-crosshair::after { width:1px; height:100%; }
+    .af-crosshair { border:1px solid rgba(255,255,255,.62); clip-path:polygon(0 0, 35% 0, 35% 8%, 8% 8%, 8% 35%, 0 35%, 0 65%, 8% 65%, 8% 92%, 35% 92%, 35% 100%, 0 100%, 0 65%, 100% 65%, 100% 35%, 65% 35%, 65% 8%, 92% 8%, 92% 35%, 100% 35%, 100% 65%, 92% 65%, 92% 92%, 65% 92%, 65% 100%, 35% 100%, 35% 92%, 8% 92%, 8% 65%, 0 65%); }
+    .af-dial { border:1px solid rgba(255,255,255,.5); border-radius:50%; background:repeating-conic-gradient(from 0deg, rgba(255,255,255,.55) 0deg 2deg, transparent 2deg 18deg); mask:radial-gradient(circle, transparent 0 54%, #000 55%); }
+    .af-dial::before { content:""; position:absolute; inset:27%; border:1px solid rgba(255,255,255,.62); border-radius:50%; background:#0b0b0b; }
+    .af-status { min-height:20px; margin-top:18px; color:rgba(255,255,255,.52); font-size:11px; letter-spacing:.04em; }
+    .lab-link { display:inline-flex; margin-top:24px; min-height:36px; align-items:center; padding:0 14px; border:1px solid rgba(255,255,255,.18); border-radius:999px; color:rgba(255,255,255,.72); text-decoration:none; background:rgba(255,255,255,.035); font-size:11px; }
+    @media (max-width:780px) { .lab-header { display:block; } .lab-meta { display:block; margin-top:12px; } .af-grid { grid-template-columns:repeat(2, minmax(0, 1fr)); } .af-card:last-child { grid-column:span 2; } }
+    /* Live-view-only canvas. The design lab intentionally has no controls or status UI. */
+    html, body { width:100%; height:100%; min-height:0; padding:0; overflow:hidden; background:#000; }
+    body { display:block; }
+    .liveview-only { position:fixed; inset:0; display:grid; place-items:center; overflow:hidden; background:#000; }
+    .liveview-frame { width:100%; height:100%; object-fit:contain; object-position:center; display:block; background:#000; }
+    .landscape-source { position:fixed; inset:0; width:100%; height:100%; border:0; display:block; background:#000; }
+    .button-lab { position:fixed; z-index:4; left:0; right:0; bottom:0; display:grid; gap:8px; padding:14px max(18px, env(safe-area-inset-left)) max(18px, env(safe-area-inset-bottom)); overflow:hidden; background:linear-gradient(180deg, transparent, rgba(0,0,0,.9) 25%); }
+    .inventory-group { display:flex; align-items:end; gap:10px; min-width:max-content; overflow-x:auto; padding-top:4px; }
+    .inventory-group-label { position:sticky; left:0; z-index:2; align-self:stretch; display:grid; place-items:center; width:72px; color:rgba(255,255,255,.4); font:700 9px/1.2 system-ui,sans-serif; letter-spacing:.12em; writing-mode:vertical-rl; transform:rotate(180deg); background:linear-gradient(90deg,rgba(0,0,0,.82),transparent); }
+    .button-study { position:relative; flex:0 0 116px; display:grid; justify-items:center; gap:8px; color:rgba(255,255,255,.62); font:600 9px/1.2 system-ui,sans-serif; letter-spacing:.08em; text-transform:uppercase; }
+    .study-button { position:relative; width:70px; height:70px; display:grid; place-items:center; border:0; color:#fff; background:transparent; cursor:pointer; touch-action:manipulation; }
+    .study-button::before, .study-button::after { content:""; position:absolute; pointer-events:none; }
+    .study-button span { position:relative; z-index:2; font-size:11px; font-weight:800; letter-spacing:.08em; }
+    .study-button:active { transform:scale(.95); }
+    .button-study.is-selected .study-button { filter:brightness(1.3); }
+    .button-study.is-selected { color:#fff; }
+    .inventory-top { width:100%; display:flex; align-items:center; justify-content:space-between; gap:6px; }
+    .inventory-top b { font-size:9px; font-weight:700; }
+    .study-hide { width:18px; height:18px; padding:0; border:1px solid rgba(255,255,255,.2); border-radius:50%; color:rgba(255,255,255,.72); background:rgba(0,0,0,.36); font:700 11px/1 system-ui,sans-serif; cursor:pointer; }
+    .button-study.is-hidden { color:rgba(255,255,255,.3); }
+    .button-study.is-hidden .study-button { opacity:.2; filter:grayscale(1); }
+    .button-study.is-hidden::after { content:"HIDDEN"; position:absolute; margin-top:88px; color:rgba(255,255,255,.38); font-size:8px; letter-spacing:.12em; }
+    .slide-study { flex-basis:150px; }
+    .slide-button { width:123px; height:49px; --slide-max:74px; justify-content:flex-start; padding-left:11px; border:1px solid rgba(255,255,255,.34); border-radius:999px; background:linear-gradient(90deg,rgba(255,255,255,.08),rgba(255,255,255,.02)); overflow:hidden; }
+    .slide-button::before { display:none; }
+    .slide-button::after { left:var(--slide-x, 0px); top:2px; width:45px; height:45px; border:1px solid rgba(255,255,255,.7); border-radius:50%; background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.2),rgba(255,255,255,.03) 55%); transition:left 80ms ease,background 120ms ease; }
+    .slide-button > span { position:absolute; z-index:2; left:2px; width:45px; text-align:center; }
+    .slide-button i { position:absolute; z-index:2; top:50%; right:33px; transform:translateY(-50%); color:rgba(255,255,255,.72); font-style:normal; font-size:15px; line-height:1; pointer-events:none; }
+    .slide-button.is-dragging::after { background:rgba(255,255,255,.2); }
+    .slide-button.is-ready { border-color:rgba(150,235,190,.74); }
+    .slide-button.is-ready::after { background:rgba(150,235,190,.28); }
+    .placement-layer { position:fixed; inset:0; z-index:3; pointer-events:auto; }
+    .placement-hint { position:absolute; top:14px; left:50%; transform:translateX(-50%); padding:7px 11px; border:1px dashed rgba(255,255,255,.22); border-radius:999px; color:rgba(255,255,255,.42); background:rgba(0,0,0,.28); font:700 9px/1 system-ui,sans-serif; letter-spacing:.1em; text-transform:uppercase; pointer-events:none; }
+    .placed-item { position:absolute; display:grid; justify-items:center; gap:5px; transform:translate(-50%,-50%); color:#fff; font:700 9px/1 system-ui,sans-serif; letter-spacing:.08em; text-transform:uppercase; cursor:move; touch-action:none; }
+    .placed-item .study-button { flex:none; }
+    .placed-remove { position:absolute; top:-7px; right:-9px; z-index:2; width:18px; height:18px; padding:0; border:1px solid rgba(255,255,255,.35); border-radius:50%; color:#fff; background:rgba(0,0,0,.72); font:700 11px/1 system-ui,sans-serif; }
+    .button-study.is-placed { opacity:.35; filter:grayscale(.7); }
+    .design-01::before { inset:10px; border:1px solid rgba(255,255,255,.82); border-radius:50%; box-shadow:0 0 0 7px rgba(255,255,255,.05), 0 0 0 15px rgba(255,255,255,.025); }
+    .design-01::after { display:none; }
+    .design-02 { border:1px solid rgba(255,255,255,.3); border-radius:22px; background:linear-gradient(145deg,rgba(255,255,255,.2),rgba(255,255,255,.03)); box-shadow:inset 0 1px rgba(255,255,255,.28),0 10px 22px rgba(0,0,0,.32); backdrop-filter:blur(8px); }
+    .design-02::before { inset:7px; border:1px solid rgba(255,255,255,.13); border-radius:16px; }
+    .design-03 { border-radius:50%; background:#151515; box-shadow:inset 0 -5px 0 rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.16),0 8px 14px rgba(0,0,0,.38); }
+    .design-03::before { inset:7px; border:1px solid rgba(255,255,255,.16); border-radius:50%; }
+    .design-04 { border:1px solid rgba(255,255,255,.46); background:linear-gradient(90deg,transparent 49%,rgba(255,255,255,.24) 50%,transparent 51%),linear-gradient(0deg,transparent 49%,rgba(255,255,255,.24) 50%,transparent 51%); }
+    .design-04::before { inset:16px; border:1px solid rgba(255,255,255,.64); border-radius:50%; }
+    .design-04::after { width:8px; height:8px; border:1px solid #fff; border-radius:50%; }
+    .design-05 { border:1px solid rgba(255,255,255,.68); clip-path:polygon(0 0,36% 0,36% 7%,7% 7%,7% 36%,0 36%,0 64%,7% 64%,7% 93%,36% 93%,36% 100%,0 100%,0 64%,100% 64%,100% 36%,64% 36%,64% 7%,93% 7%,93% 36%,100% 36%,100% 64%,93% 64%,93% 93%,64% 93%,64% 100%,36% 100%,36% 93%,7% 93%,7% 64%,0 64%); }
+    .design-05::before { inset:18px; border:1px solid rgba(255,255,255,.54); border-radius:50%; }
+    .design-06 { border:1px solid rgba(255,255,255,.48); border-radius:50%; background:radial-gradient(circle,rgba(255,255,255,.18) 0 7%,transparent 8% 35%,rgba(255,255,255,.08) 36% 37%,transparent 38%); }
+    .design-06::before { inset:4px; border:1px solid rgba(255,255,255,.2); border-radius:50%; }
+    .design-07 { border:1px solid rgba(183,235,255,.8); border-radius:14px; color:#d8f6ff; background:rgba(64,156,190,.12); box-shadow:0 0 18px rgba(76,191,236,.18),inset 0 0 14px rgba(76,191,236,.1); }
+    .design-07::before { inset:8px; border:1px solid rgba(183,235,255,.38); border-radius:8px; }
+    .design-08 { border:1px solid rgba(255,255,255,.54); border-radius:50%; background:repeating-conic-gradient(from 0deg,rgba(255,255,255,.65) 0deg 2deg,transparent 2deg 18deg); mask:radial-gradient(circle,transparent 0 54%,#000 55%); }
+    .design-08::before { inset:21px; border:1px solid rgba(255,255,255,.5); border-radius:50%; background:#0b0b0b; }
+    .design-09 { border:1px solid rgba(255,255,255,.2); border-radius:999px; background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.025)); box-shadow:inset 0 1px rgba(255,255,255,.16); }
+    .design-09::before { inset:7px 14px; border:1px solid rgba(255,255,255,.18); border-radius:999px; }
+    .design-10 { border:1px solid rgba(255,255,255,.62); background:linear-gradient(90deg,transparent 49%,rgba(255,255,255,.3) 50%,transparent 51%),linear-gradient(0deg,transparent 49%,rgba(255,255,255,.3) 50%,transparent 51%); }
+    .design-10::before { inset:13px; border:1px solid rgba(255,255,255,.7); }
+    @media (max-width:700px) { .button-lab { padding-left:10px; padding-right:10px; } .button-study { flex-basis:94px; } .study-button { width:64px; height:64px; } .slide-study { flex-basis:132px; } .slide-button { width:110px; height:45px; --slide-max:65px; } .slide-button::after { width:41px; height:41px; } .slide-button > span { left:2px; width:41px; } .slide-button i { right:33px; } .placement-layer { inset:0; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="lab-header"><div><h1>0728-0 DESIGN LAB</h1><p>AF button study · design only · no camera command</p></div><span class="lab-meta">Landscape HUD / 01</span></header>
+    <section class="preview-stage" aria-label="라이브뷰 디자인 미리보기"><div class="preview-target"></div></section>
+    <section class="af-grid" aria-label="AF 버튼 디자인 5종">
+      <article class="af-card is-selected"><h2>01 / OPTICAL</h2><p>광학 링과 초점면을 강조한 HUD형</p><button class="af-button af-optical" data-design="Optical ring"><span>AF</span><small>FOCUS</small></button></article>
+      <article class="af-card"><h2>02 / GLASS</h2><p>셀로판지처럼 얹히는 유리 레이어형</p><button class="af-button af-glass" data-design="Glass lens"><span>AF</span><small>TOUCH</small></button></article>
+      <article class="af-card"><h2>03 / RADAR</h2><p>십자선과 거리감을 가진 탐색형</p><button class="af-button af-radar" data-design="Radar cross"><span>AF</span><small>SCAN</small></button></article>
+      <article class="af-card"><h2>04 / PRECISION</h2><p>최소한의 선으로 정확성을 표현한 형</p><button class="af-button af-crosshair" data-design="Precision mark"><span>AF</span><small>LOCK</small></button></article>
+      <article class="af-card"><h2>05 / DIAL</h2><p>카메라 물리 다이얼을 연상시키는 형</p><button class="af-button af-dial" data-design="Dial control"><span>AF</span><small>SET</small></button></article>
+    </section>
+    <div id="afStatus" class="af-status" aria-live="polite">Selected: Optical ring</div>
+    <a class="lab-link" href="/remote-ui/0716-landscape-1.1.html?designLab=0728-0">Open current landscape base</a>
+  </main>
+  <script>
+    document.querySelectorAll(".af-button").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".af-card").forEach((card) => card.classList.remove("is-selected"));
+        button.closest(".af-card").classList.add("is-selected");
+        document.getElementById("afStatus").textContent = `Selected: ${button.dataset.design}`;
+      });
+    });
+  </script>
+  <script>
+    document.body.innerHTML = '<main class="liveview-only" aria-label="Live view design canvas"><img id="liveFrame" class="liveview-frame" alt="Live view"></main>';
+    const liveFrame = document.getElementById("liveFrame");
+    const LIVEVIEW_URL = "/cgi-bin/liveview-v21";
+    let frameBusy = false;
+    let frameObjectUrl = "";
+    function placeholder() {
+      liveFrame.src = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900"><rect width="1600" height="900" fill="#050505"/><circle cx="800" cy="450" r="150" fill="none" stroke="#1c1c1c"/><circle cx="800" cy="450" r="4" fill="#777"/></svg>');
+    }
+    async function requestFrame() {
+      if (frameBusy) return;
+      frameBusy = true;
+      try {
+        const response = await fetch(`${LIVEVIEW_URL}?ts=${Date.now()}`, { cache:"no-store", headers:{"X-D810-Client":"0728-0-design-lab"} });
+        if (!response.ok) throw new Error(`frame_${response.status}`);
+        const objectUrl = URL.createObjectURL(await response.blob());
+        const oldUrl = frameObjectUrl;
+        frameObjectUrl = objectUrl;
+        liveFrame.onload = () => { if (oldUrl) URL.revokeObjectURL(oldUrl); };
+        liveFrame.src = objectUrl;
+      } catch (_) {
+        // Keep the canvas clean while the live-view stream recovers.
+      } finally {
+        frameBusy = false;
+        window.setTimeout(requestFrame, 120);
+      }
+    }
+    async function requestJson(url) {
+      return fetch(url, {
+        cache:"no-store",
+        headers:{
+          "X-D810-Client":"ui-flat",
+          "X-D810-Event":url.includes("action") ? "action" : "boot",
+          "X-D810-Trace":`${Date.now().toString(36)}-0728-0`
+        }
+      }).then((response) => response.json());
+    }
+    async function startDesignLiveView() {
+      const boot = `?boot=${Date.now().toString(36)}-0728-0`;
+      await requestJson(`/cgi-bin/session-manager${boot}`).catch(() => null);
+      await requestJson("/cgi-bin/action-v21?action=live-on").catch(() => null);
+      await requestJson("/cgi-bin/action-v21?action=live-fallback").catch(() => null);
+      requestFrame();
+    }
+    placeholder();
+    startDesignLiveView();
+  </script>
+  <script>
+    document.body.innerHTML = '<iframe class="landscape-source" title="Live view" src="/remote-ui/0716-landscape-1.1.html?designLab=0728-0"></iframe>';
+    document.body.insertAdjacentHTML("beforeend", '<section class="button-lab" aria-label="AF button design inventory">' + Array.from({length:11}, (_, index) => {
+      const number = String(index + 1).padStart(2, "0");
+      const slider = index === 10;
+      return `<article class="button-study${slider ? " slide-study" : ""}${index === 0 ? " is-selected" : ""}"><div class="inventory-top"><b>AF ${number}</b><button class="study-hide" type="button" data-hide-study aria-label="Hide AF ${number}">×</button></div><button class="study-button ${slider ? "slide-button" : `design-${number}`}" type="button" aria-label="AF design ${number}"><span>AF</span>${slider ? "<i>→</i>" : ""}</button></article>`;
+    }).join("") + '</section>');
+    const inventory = document.querySelector(".button-lab");
+    const inventoryItems = Array.from(inventory.querySelectorAll(".button-study"));
+    const buttonGroup = document.createElement("div");
+    const sliderGroup = document.createElement("div");
+    buttonGroup.className = "inventory-group";
+    sliderGroup.className = "inventory-group";
+    buttonGroup.innerHTML = '<span class="inventory-group-label">BUTTON</span>';
+    sliderGroup.innerHTML = '<span class="inventory-group-label">SLIDER</span>';
+    inventoryItems.forEach((item, index) => (index < 10 ? buttonGroup : sliderGroup).appendChild(item));
+    inventory.replaceChildren(buttonGroup, sliderGroup);
+    document.body.insertAdjacentHTML("beforeend", '<div class="placement-layer" aria-label="Placed button canvas"></div>');
+    const placementLayer = document.querySelector(".placement-layer");
+    function placeInventoryItem(item, x, y) {
+      if (!item || item.classList.contains("is-placed")) return;
+      const sourceButton = item.querySelector(".study-button");
+      const placed = document.createElement("div");
+      placed.className = "placed-item";
+      placed.style.left = `${x}px`;
+      placed.style.top = `${y}px`;
+      const clone = sourceButton.cloneNode(true);
+      clone.removeAttribute("aria-label");
+      const remove = document.createElement("button");
+      remove.className = "placed-remove";
+      remove.type = "button";
+      remove.textContent = "x";
+      remove.setAttribute("aria-label", "Delete placed button");
+      const label = document.createElement("span");
+      label.textContent = item.querySelector(".inventory-top b")?.textContent || "PLACED";
+      placed.append(clone, remove, label);
+      placementLayer.appendChild(placed);
+      item.classList.add("is-placed");
+      remove.addEventListener("click", () => { placed.remove(); item.classList.remove("is-placed"); });
+      let moveId = null;
+      placed.addEventListener("pointerdown", (event) => { moveId = event.pointerId; placed.setPointerCapture(event.pointerId); });
+      placed.addEventListener("pointermove", (event) => { if (event.pointerId === moveId) { placed.style.left = `${event.clientX}px`; placed.style.top = `${event.clientY}px`; } });
+      placed.addEventListener("pointerup", () => { moveId = null; });
+    }
+    inventory.style.display = "none";
+    const initialPositions = [[10,24],[28,24],[46,24],[64,24],[82,24],[10,52],[28,52],[46,52],[64,52],[82,52],[50,76]];
+    inventoryItems.forEach((item, index) => {
+      // Keep AF02-AF10 in the source inventory for later studies, but hide them from this pass.
+      if (index !== 0 && index !== 10) return;
+      const position = initialPositions[index] || [50,50];
+      placeInventoryItem(item, window.innerWidth * position[0] / 100, window.innerHeight * position[1] / 100);
+    });
+    inventoryItems.forEach((item) => {
+      const sourceButton = item.querySelector(".study-button");
+      sourceButton.addEventListener("pointerdown", (event) => { sourceButton.dataset.dragX = String(event.clientX); sourceButton.dataset.dragY = String(event.clientY); });
+      sourceButton.addEventListener("pointerup", (event) => {
+        const startX = Number(sourceButton.dataset.dragX || event.clientX);
+        const startY = Number(sourceButton.dataset.dragY || event.clientY);
+        if (Math.hypot(event.clientX - startX, event.clientY - startY) > 12 && event.clientY < window.innerHeight - 180) placeInventoryItem(item, event.clientX, event.clientY);
+      });
+    });
+    let activeInventoryDrag = null;
+    inventoryItems.forEach((item) => {
+      const sourceButton = item.querySelector(".study-button");
+      sourceButton.addEventListener("pointerdown", (event) => { activeInventoryDrag = { item, x: event.clientX, y: event.clientY }; });
+    });
+    document.addEventListener("pointerup", (event) => {
+      if (!activeInventoryDrag) return;
+      const drag = activeInventoryDrag;
+      activeInventoryDrag = null;
+      if (Math.hypot(event.clientX - drag.x, event.clientY - drag.y) > 12 && event.clientY < window.innerHeight - 180) placeInventoryItem(drag.item, event.clientX, event.clientY);
+    });
+    document.querySelectorAll("[data-hide-study]").forEach((hideButton) => {
+      hideButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        hideButton.closest(".button-study").classList.toggle("is-hidden");
+      });
+    });
+    document.querySelectorAll(".study-button").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".button-study").forEach((study) => study.classList.remove("is-selected"));
+        button.closest(".button-study").classList.add("is-selected");
+      });
+    });
+    const slideButton = document.querySelector(".slide-button");
+    if (slideButton) {
+      let slideStartX = 0;
+      let slideX = 0;
+      let slidePointerId = null;
+      slideButton.addEventListener("pointerdown", (event) => {
+        slidePointerId = event.pointerId;
+        slideStartX = event.clientX - slideX;
+        slideButton.classList.add("is-dragging");
+        slideButton.setPointerCapture(event.pointerId);
+      });
+      slideButton.addEventListener("pointermove", (event) => {
+        if (event.pointerId !== slidePointerId) return;
+        const slideMax = Number.parseInt(getComputedStyle(slideButton).getPropertyValue("--slide-max"), 10) || 74;
+        slideX = Math.max(0, Math.min(slideMax, event.clientX - slideStartX));
+        slideButton.style.setProperty("--slide-x", `${slideX}px`);
+        slideButton.classList.toggle("is-ready", slideX >= 38);
+      });
+      const finishSlide = () => {
+        slidePointerId = null;
+        slideButton.classList.remove("is-dragging");
+        const slideMax = Number.parseInt(getComputedStyle(slideButton).getPropertyValue("--slide-max"), 10) || 74;
+        if (slideX >= slideMax * 0.78) {
+          slideButton.querySelector("span").textContent = "SHOT";
+          window.setTimeout(() => { slideX = 0; slideButton.style.setProperty("--slide-x", "0px"); slideButton.classList.remove("is-ready"); slideButton.querySelector("span").textContent = "AF"; }, 420);
+        } else {
+          slideX = 0;
+          slideButton.style.setProperty("--slide-x", "0px");
+          slideButton.classList.remove("is-ready");
+        }
+      };
+      slideButton.addEventListener("pointerup", finishSlide);
+      slideButton.addEventListener("pointercancel", finishSlide);
+    }
+    const landscapeSource = document.querySelector(".landscape-source");
+    landscapeSource.addEventListener("load", () => {
+      const sourceDocument = landscapeSource.contentDocument;
+      if (!sourceDocument) return;
+      sourceDocument.querySelectorAll(".topbar, .control-card, .hidden-status, .landscape-exit, .landscape-layout-tools, .landscape-control-stage, .overlay-badge, .shot-preview, .shot-viewer").forEach((node) => { node.style.display = "none"; node.style.pointerEvents = "none"; });
+      const settingsOverlay = sourceDocument.querySelector("#landscapeSettingsOverlay");
+      if (settingsOverlay) {
+        settingsOverlay.hidden = false;
+        settingsOverlay.classList.add("is-open");
+        settingsOverlay.style.display = "block";
+        settingsOverlay.style.pointerEvents = "auto";
+      }
+      const sourceApp = sourceDocument.querySelector(".app");
+      if (sourceApp) { sourceApp.style.cssText = "width:100vw;height:100dvh;min-height:100dvh;display:block;padding:0;background:#000;"; }
+      const sourcePreview = sourceDocument.querySelector(".preview-card");
+      if (sourcePreview) { sourcePreview.style.cssText = "position:fixed;inset:0;width:100vw;height:100dvh;min-height:0;border:0;background:#000;"; }
+      const sourceFrame = sourceDocument.querySelector(".preview-frame");
+      if (sourceFrame) {
+        sourceFrame.style.cssText = "width:100%;height:100%;min-height:0;object-fit:contain;object-position:center;background:#000;";
+        if (sourceFrame.src.startsWith("data:image")) {
+          sourceFrame.src = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1067"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#141414"/><stop offset="50%" stop-color="#090909"/><stop offset="100%" stop-color="#1c1c1c"/></linearGradient></defs><rect width="1600" height="1067" fill="url(#bg)"/><circle cx="310" cy="850" r="240" fill="rgba(255,255,255,0.04)"/><circle cx="1280" cy="180" r="160" fill="rgba(255,255,255,0.06)"/><rect x="82" y="302" width="1436" height="572" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="4"/></svg>');
+        }
+      }
+      sourceDocument.documentElement.style.cssText = "width:100%;height:100%;overflow:hidden;background:#000;";
+      sourceDocument.body.style.cssText = "width:100%;height:100%;margin:0;padding:0;overflow:hidden;background:#000;";
+    });
+  </script>
+</body>
+</html>

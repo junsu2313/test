@@ -1,0 +1,3 @@
+file=underlab-camera-v0.3.0-field.2-20260816-debug.apk
+sha256=e3b97ce078155cd83cc07774afbcfdc8da2a56c33ef3d534ef2f88f75759f753
+bytes=144996273

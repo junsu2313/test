@@ -1,0 +1,5 @@
+measurement_started=2026-08-16T04:51:25.4447368+09:00
+pressure_started=2026-08-16T04:51:45.4507343+09:00
+pressure_ended=2026-08-16T04:51:47.5364902+09:00
+pressure_elapsed_ms=2086
+checkpoint_output=deferred-live elapsed=0.02

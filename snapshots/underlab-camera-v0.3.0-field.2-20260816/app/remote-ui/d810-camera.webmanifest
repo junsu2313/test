@@ -1,0 +1,12 @@
+{
+  "name": "D810 Remote Camera",
+  "short_name": "D810 Camera",
+  "start_url": "/remote-ui/0716-1.1.html",
+  "scope": "/remote-ui/",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "any",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "description": "Nikon D810 remote control UI"
+}

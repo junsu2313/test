@@ -1,0 +1,13 @@
+aa2889244d769f66d2f0a48e81da2013113809e41cf692adbf543e4609269b34  /www/cgi-bin/action-v21
+f2d15c61ddbe4d087fbbff5bcd55a9f638916e818e06b860176fab30c4ba95cf  /www/cgi-bin/bridge-common.sh
+199a57149cb381736dc658a84aadc4cf14f3441227e0bd9c106c555333d158b9  /www/cgi-bin/d810bridge.lua
+c09cccd7937b3323f2b90080814384d5404854b8bb874b940a743a4900a83e4e  /www/cgi-bin/d810ws.lua
+e8a0636324e09482c13602c2eec8925f5ee2aa956c9715d0a8c82ad12affd304  /www/cgi-bin/session-manager
+feb24e9ef7f0152b6407802a23dab00e56ffd705052fedef605fd9b8c9e09244  /www/cgi-bin/status-v21
+338358ceb884fbea0808eacc21e2bac3fa53e379e0a3f5e30a8320050e6ad020  /www/cgi-bin/captured-object
+d1bf10f86777dd74c01073906501720f35f27aa29da7c5b4672cdf89509084ed  /www/cgi-bin/liveview-v21
+bd734cab8b358175681983eba9dc588b9db6003c45c3c0108420f4d3668fff71  /usr/bin/d810-log-checkpoint
+INITIAL_STATUS
+{"ok":true,"perfRequestGapP95Us":0,"perfWaitHookAvgUs":0,"perfRequestGapAvgUs":0,"transportReady":true,"sessionBackend":true,"status":"ready","softwareReady":true,"liveView":false,"cameraDetected":true,"sessionId":15,"reconnectCount":0,"sessionCondition":"Ready","frameFailures":0,"sessionLabel":"015_session","uiDetail":"Camera connection confirmed and ready for commands","perfStreamSendP95Us":0,"backendState":"ready","connected":true,"perfRequestGapP50Us":0,"perfRequestGapMaxUs":0,"perfStreamSendP50Us":0,"uiPhase":"Ready","perfStreamSendAvgUs":0,"backendStartedAt":1786826046101,"backend":"session-backend","perfWaitHookP95Us":0,"hardwareDetected":true,"commandSessionLabel":"015_session","perfRequestGapCount":0,"perfWaitHookP50Us":0,"commandSessionId":15,"liveSessionLabel":""}
+AF_FIX_FINAL_STATUS
+{"ok":true,"transportReady":true,"sessionBackend":true,"status":"ready","softwareReady":true,"liveView":false,"cameraDetected":true,"sessionId":15,"batteryPercent":100,"sessionCondition":"Ready","frameFailures":0,"sessionLabel":"015_session","backendState":"ready","connected":true,"backendStartedAt":1786828138023,"reconnectCount":0,"backend":"session-backend","hardwareDetected":true,"objectHandle":689546386,"objectName":"DSC_9362.JPG","previewSource":"thumb","thumbWidth":160,"thumbHeight":120}

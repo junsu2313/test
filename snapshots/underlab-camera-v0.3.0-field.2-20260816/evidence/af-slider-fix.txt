@@ -1,0 +1,28 @@
+Underlab Camera v0.3.0-field.2 AF slider verification
+Date: 2026-08-16 Asia/Seoul
+
+RESULT PASS
+- S10 wireless ADB target: 192.168.8.165:40057
+- Installed versionName: 0.3.0-field.2
+- Installed versionCode: 20260816
+- Slider PREP: PASS
+- Slider SHUTTER: PASS
+- Slider HOLD STOP: PASS
+- Captured preview displayed: PASS
+- Opal final status: ready, liveView=false, frameFailures=0, reconnectCount=0
+- Duplicate shutter-hold-start request after release detent: absent
+- Before UI-event-to-shutter-complete: 4.259 s
+- After UI-event-to-shutter-complete: 3.494 s
+- Reduction: 0.765 s (about 18 percent)
+
+Root causes fixed
+- Idle mode incorrectly wrote the Live View recording-media property.
+- Successful D810 captures were reversed by the idempotent 0xA003 release response.
+- Nested structured Nikon errors were reduced to table pointer text.
+
+Deployed Opal d810bridge.lua SHA256:
+199a57149cb381736dc658a84aadc4cf14f3441227e0bd9c106c555333d158b9
+
+Opal rollback backups
+- /root/d810-deploy-backups/20260816-af-slider-before
+- /root/d810-deploy-backups/20260816-af-slider-phase1

@@ -1,0 +1,220 @@
+﻿{
+    "label":  "idle-60s",
+    "durationSeconds":  60.501,
+    "frames":  87,
+    "firstFrameId":  3258,
+    "lastFrameId":  3344,
+    "idGaps":  0,
+    "receiveGapP50Ms":  80.218,
+    "receiveGapP95Ms":  133.109,
+    "receiveGapMaxMs":  240.538,
+    "producerGapP95Ms":  60,
+    "producerGapMaxMs":  101,
+    "transportP95Ms":  3448,
+    "slidingFpsMin":  0,
+    "slidingFpsP05":  0,
+    "slidingFpsMedian":  0,
+    "slowEvents":  [
+                       {
+                           "FrameId":  3329,
+                           "ReceivedElapsedMs":  6284.104,
+                           "ReceiveGapMs":  240.538,
+                           "ProducerGapMs":  32,
+                           "TransportAfterCaptureMs":  3082,
+                           "CaptureMs":  30,
+                           "Bytes":  33064,
+                           "IdGap":  0
+                       },
+                       {
+                           "FrameId":  3302,
+                           "ReceivedElapsedMs":  3921.82,
+                           "ReceiveGapMs":  159.185,
+                           "ProducerGapMs":  29,
+                           "TransportAfterCaptureMs":  1373,
+                           "CaptureMs":  28,
+                           "Bytes":  33881,
+                           "IdGap":  0
+                       },
+                       {
+                           "FrameId":  3295,
+                           "ReceivedElapsedMs":  3315.084,
+                           "ReceiveGapMs":  149.628,
+                           "ProducerGapMs":  28,
+                           "TransportAfterCaptureMs":  930,
+                           "CaptureMs":  26,
+                           "Bytes":  34025,
+                           "IdGap":  0
+                       },
+                       {
+                           "FrameId":  3259,
+                           "ReceivedElapsedMs":  325.945,
+                           "ReceiveGapMs":  135.633,
+                           "ProducerGapMs":  44,
+                           "TransportAfterCaptureMs":  -1010,
+                           "CaptureMs":  34,
+                           "Bytes":  33489,
+                           "IdGap":  0
+                       },
+                       {
+                           "FrameId":  3269,
+                           "ReceivedElapsedMs":  1121.349,
+                           "ReceiveGapMs":  133.109,
+                           "ProducerGapMs":  101,
+                           "TransportAfterCaptureMs":  -685,
+                           "CaptureMs":  74,
+                           "Bytes":  33327,
+                           "IdGap":  0
+                       },
+                       {
+                           "FrameId":  3272,
+                           "ReceivedElapsedMs":  1328.31,
+                           "ReceiveGapMs":  127.306,
+                           "ProducerGapMs":  15,
+                           "TransportAfterCaptureMs":  -539,
+                           "CaptureMs":  13,
+                           "Bytes":  33028,
+                           "IdGap":  0
+                       },
+                       {
+                           "FrameId":  3337,
+                           "ReceivedElapsedMs":  6857.952,
+                           "ReceiveGapMs":  125.895,
+                           "ProducerGapMs":  28,
+                           "TransportAfterCaptureMs":  3441,
+                           "CaptureMs":  27,
+                           "Bytes":  32650,
+                           "IdGap":  0
+                       },
+                       {
+                           "FrameId":  3308,
+                           "ReceivedElapsedMs":  4509.509,
+                           "ReceiveGapMs":  125.326,
+                           "ProducerGapMs":  32,
+                           "TransportAfterCaptureMs":  1791,
+                           "CaptureMs":  15,
+                           "Bytes":  33015,
+                           "IdGap":  0
+                       },
+                       {
+                           "FrameId":  3304,
+                           "ReceivedElapsedMs":  4153.236,
+                           "ReceiveGapMs":  122.425,
+                           "ProducerGapMs":  19,
+                           "TransportAfterCaptureMs":  1550,
+                           "CaptureMs":  18,
+                           "Bytes":  34026,
+                           "IdGap":  0
+                       },
+                       {
+                           "FrameId":  3285,
+                           "ReceivedElapsedMs":  2403.845,
+                           "ReceiveGapMs":  122.039,
+                           "ProducerGapMs":  20,
+                           "TransportAfterCaptureMs":  267,
+                           "CaptureMs":  18,
+                           "Bytes":  33180,
+                           "IdGap":  0
+                       },
+                       {
+                           "FrameId":  3281,
+                           "ReceivedElapsedMs":  2087.831,
+                           "ReceiveGapMs":  121.98,
+                           "ProducerGapMs":  19,
+                           "TransportAfterCaptureMs":  23,
+                           "CaptureMs":  17,
+                           "Bytes":  33246,
+                           "IdGap":  0
+                       },
+                       {
+                           "FrameId":  3314,
+                           "ReceivedElapsedMs":  5010.013,
+                           "ReceiveGapMs":  121.775,
+                           "ProducerGapMs":  20,
+                           "TransportAfterCaptureMs":  2143,
+                           "CaptureMs":  19,
+                           "Bytes":  32666,
+                           "IdGap":  0
+                       },
+                       {
+                           "FrameId":  3282,
+                           "ReceivedElapsedMs":  2207.392,
+                           "ReceiveGapMs":  119.561,
+                           "ProducerGapMs":  13,
+                           "TransportAfterCaptureMs":  129,
+                           "CaptureMs":  12,
+                           "Bytes":  32291,
+                           "IdGap":  0
+                       },
+                       {
+                           "FrameId":  3287,
+                           "ReceivedElapsedMs":  2617.157,
+                           "ReceiveGapMs":  118.833,
+                           "ProducerGapMs":  24,
+                           "TransportAfterCaptureMs":  432,
+                           "CaptureMs":  23,
+                           "Bytes":  34279,
+                           "IdGap":  0
+                       },
+                       {
+                           "FrameId":  3305,
+                           "ReceivedElapsedMs":  4268.448,
+                           "ReceiveGapMs":  115.212,
+                           "ProducerGapMs":  20,
+                           "TransportAfterCaptureMs":  1645,
+                           "CaptureMs":  19,
+                           "Bytes":  34026,
+                           "IdGap":  0
+                       },
+                       {
+                           "FrameId":  3280,
+                           "ReceivedElapsedMs":  1965.851,
+                           "ReceiveGapMs":  114.475,
+                           "ProducerGapMs":  21,
+                           "TransportAfterCaptureMs":  -80,
+                           "CaptureMs":  20,
+                           "Bytes":  33246,
+                           "IdGap":  0
+                       },
+                       {
+                           "FrameId":  3297,
+                           "ReceivedElapsedMs":  3504.917,
+                           "ReceiveGapMs":  111.398,
+                           "ProducerGapMs":  23,
+                           "TransportAfterCaptureMs":  1078,
+                           "CaptureMs":  20,
+                           "Bytes":  33468,
+                           "IdGap":  0
+                       },
+                       {
+                           "FrameId":  3333,
+                           "ReceivedElapsedMs":  6520.255,
+                           "ReceiveGapMs":  111.217,
+                           "ProducerGapMs":  19,
+                           "TransportAfterCaptureMs":  3181,
+                           "CaptureMs":  14,
+                           "Bytes":  33708,
+                           "IdGap":  0
+                       },
+                       {
+                           "FrameId":  3260,
+                           "ReceivedElapsedMs":  435.022,
+                           "ReceiveGapMs":  109.077,
+                           "ProducerGapMs":  27,
+                           "TransportAfterCaptureMs":  -935,
+                           "CaptureMs":  22,
+                           "Bytes":  33450,
+                           "IdGap":  0
+                       },
+                       {
+                           "FrameId":  3311,
+                           "ReceivedElapsedMs":  4727.119,
+                           "ReceiveGapMs":  109.025,
+                           "ProducerGapMs":  21,
+                           "TransportAfterCaptureMs":  1925,
+                           "CaptureMs":  20,
+                           "Bytes":  34127,
+                           "IdGap":  0
+                       }
+                   ],
+    "csvPath":  "E:\\Underlab_APP\\Camera\\artifacts\\frame-id\\20260816-041328-idle-60s.csv"
+}

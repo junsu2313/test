@@ -1,0 +1,3 @@
+#!/bin/sh
+
+/usr/bin/tailscale-sta-trigger >/dev/null 2>&1 &

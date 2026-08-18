@@ -1,0 +1,22 @@
+#!/bin/sh /etc/rc.common
+
+START=99
+STOP=10
+USE_PROCD=0
+
+PROG=/usr/bin/ddserver
+PIDFILE=/var/run/ddserver.pid
+
+start_service() {
+	stop_service
+	start-stop-daemon -S -b -m -p "$PIDFILE" -x "$PROG" -- >/dev/null 2>&1
+	sleep 1
+	return 0
+}
+
+stop_service() {
+	start-stop-daemon -K -p "$PIDFILE" -x "$PROG" >/dev/null 2>&1 || true
+	killall ddserver >/dev/null 2>&1 || true
+	rm -f "$PIDFILE"
+}
+

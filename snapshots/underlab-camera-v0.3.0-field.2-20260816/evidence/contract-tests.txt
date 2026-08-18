@@ -1,0 +1,249 @@
+TEST test-liveview-action-contract.ps1
+PASS: session recovery has a live-view restore path
+PASS: idle status verifies the live PTP session instead of trusting cached ready state
+PASS: failed PTP probes are reported as degraded rather than idle or ready
+PASS: LIVE stop cannot overwrite a broken transport with ready
+PASS: failed LIVE startup clears stale transport readiness
+PASS: legacy status requires a successful PTP property probe
+PASS: live session identity is restored from the existing session
+PASS: bridge exposes AF as an independent action
+PASS: AF waits until Nikon releases DeviceBusy before returning
+PASS: PTP DeviceBusy is not misreported as camera missing
+PASS: bridge exposes SHOT as an independent action
+PASS: single shutter checks the physical Nikon live-view state before PC-mode capture
+PASS: bridge reads the Nikon event queue
+PASS: bridge recognizes PTP ObjectAdded events
+PASS: bridge converts camera events into capture state
+PASS: capture event endpoint requests camera events without a preview image
+PASS: program shutter enters Nikon PC control mode
+PASS: program shutter can return camera controls to the body
+PASS: program shutter releases camera controls after capture
+PASS: bridge exposes RAW mode as an independent action
+PASS: RAW mode explicitly sets Nikon compression to RAW plus Fine JPEG
+PASS: property writes use a separate PTP data container
+PASS: ddserver receives command and data in one framed packet
+PASS: camera actions share the command lock
+PASS: action endpoint exposes session recovery
+PASS: session recovery forwards to the existing bridge session
+PASS: action guard exposes a verified fresh healthy declaration
+PASS: healthy recovery has a queue-free declaration response
+PASS: live healthy no-op requires matching explicit live intent
+PASS: idle healthy no-op cannot override explicit live intent
+PASS: matching healthy recovery never enters the camera command queue
+PASS: RAW action forwards to the existing bridge session
+PASS: unlock action returns control to the camera body
+PASS: action ingress writes correlated stage telemetry
+PASS: action ingress avoids a duplicate synchronous field event
+PASS: action completion writes a correlated result
+PASS: client command identity is sanitized before logging
+PASS: shell telemetry initializes its precise clock once per process
+PASS: subsequent shell timestamps avoid spawning Lua
+PASS: S10 actions send the operation trace id
+PASS: S10 actions send a unique command id
+PASS: S10 keeps a persistent field telemetry file
+PASS: S10 flushes each completed request to app storage
+PASS: S10 persistent telemetry has bounded rotation
+PASS: action endpoint restores live mode after recovery
+PASS: recovery restores live view only from explicit client intent
+PASS: stale live-session metadata cannot resurrect live view
+PASS: camera actions trigger the runtime guard
+PASS: server serializes live intent and bridge transitions
+PASS: action endpoint centralizes legacy frame worker cleanup
+PASS: healthy action path skips legacy worker process cleanup when no worker state exists
+PASS: live actions do not unconditionally launch legacy worker cleanup
+PASS: status reads the current snapshot over one direct bridge connection
+PASS: status does not load the process-heavy runtime management library
+PASS: runtime guardian is a low-frequency safety net
+PASS: runtime guardian recovers the session health worker
+PASS: runtime guardian only removes its own pid file
+PASS: runtime guardian exits when it receives a stop signal
+PASS: guardian never restores live view from stale session metadata
+PASS: battery worker wakes at a low frequency
+PASS: battery value is refreshed at ten-minute intervals
+PASS: new browser sessions do not inherit the previous live session
+PASS: session restart preserves live view only while explicit intent exists
+PASS: new browser sessions clear live-session state
+PASS: new browser sessions clear runtime caches
+PASS: session manager has a persistent camera log
+PASS: session logs have a 10MiB retention cap
+PASS: oldest session logs are pruned at session startup
+PASS: serialized startup allows generous stage retries
+PASS: each stage attempt has only a hung-request watchdog
+PASS: PTP boot retries only the failed bridge stage
+PASS: workers start behind serialized stage barriers
+PASS: worker failures do not rewind completed stages
+PASS: exhausted startup does not report false success
+PASS: shell bridge events use a persistent camera log
+PASS: bridge shell supports bounded control requests
+PASS: bridge publishes its own health declaration
+PASS: bridge health declarations expire when the producer stops
+PASS: normal actions use the bridge health declaration
+PASS: heavy runtime inspection is reserved for abnormal health
+PASS: cached frames invoke the runtime guardian only when unavailable
+PASS: bridge persistent log has a bounded rotation threshold
+PASS: active session log has a bounded rotation threshold
+PASS: verbose transport reads are opt-in so useful history survives rotation
+PASS: bridge rejects corrupt packet lengths before a huge socket read
+PASS: bridge stderr cannot duplicate the persistent session log
+PASS: websocket persistent log has a bounded rotation threshold
+PASS: bridge publishes each captured frame to the direct stream
+PASS: direct live view rate-limits the fallback frame cache
+PASS: direct live view uses a one-second fallback cache
+PASS: last-good cache updates at a lower frequency
+PASS: failed frame capture has bounded backoff
+PASS: LIVE is not reported ready until a fresh camera frame succeeds
+PASS: LIVE readiness cannot be satisfied by a stale cached frame
+PASS: bridge shutdown releases the camera-side PTP session
+PASS: device connect is acknowledged before PTP session open
+PASS: USB reconnect has a bounded settle interval before OpenSession
+PASS: first-frame warmup retries do not restart Nikon LIVE
+PASS: recovered LIVE also requires a fresh first frame
+PASS: camera probe, not stale client intent, controls actual LIVE state
+PASS: failed camera probes cannot advertise a ready transport
+PASS: failed frame backoff runs after command polling
+PASS: live transport preserves structured errors for recovery
+PASS: background live frames reconnect after ddserver loss
+PASS: client recovery requests do not reconnect a healthy PTP session
+PASS: healthy live recovery requires a recent successful frame
+PASS: idle recovery verifies the camera transport before becoming a no-op
+PASS: ddserver recovery preserves explicit live intent across procd delay
+PASS: live recovery refuses sticky process fallback during ddserver respawn
+PASS: all automatic reconnects preserve persistent live transport
+PASS: live ensure-connected failures restore producer intent
+PASS: failed live restart remains eligible for persistent transport recovery
+PASS: failed live transport recovery remains eligible for bounded retry
+PASS: STOP reports camera confirmation while always fencing the local producer
+PASS: STOP retries once through a fresh ddserver transport
+PASS: direct stream writes the small frame prefix separately
+PASS: direct stream avoids joining the JPEG into a packet string
+PASS: active direct streaming skips the idle loop sleep
+PASS: websocket prefers the direct bridge stream
+PASS: bridge has a dedicated 0x9203 response parser
+PASS: Nikon live start primes camera state before StartLiveView
+PASS: Nikon live start selects SDRAM recording by default
+PASS: Nikon InvalidStatus is re-primed and retried
+PASS: Nikon transient busy is bounded during live start
+PASS: Nikon asynchronous live start has a bounded settle phase
+PASS: Nikon asynchronous burst completion is not retransmitted
+PASS: successful persistent reconnect exits process-based fallback
+PASS: bridge emits compact binary live metadata
+PASS: websocket retains the frame-file fallback
+PASS: websocket reads direct metadata without splitting a combined payload
+PASS: websocket forwards bridge metadata without JSON re-encoding
+PASS: websocket sends direct metadata as binary
+PASS: websocket sends its frame header separately from the JPEG
+PASS: websocket accepts clients in isolated workers
+PASS: websocket bounds concurrent client workers
+PASS: websocket reaps completed client workers
+PASS: websocket idles stale reconnects while live view is stopped
+PASS: idle websocket workers detect disconnected clients
+PASS: STOP terminates direct-stream websocket workers before fallback
+PASS: STOP terminates fallback websocket workers
+PASS: UI parses compact binary live metadata
+PASS: UI identifies the optimized direct stream
+PASS: ddserver exposes configurable USB bulk reads
+PASS: ddserver reuses its USB frame buffer
+PASS: ddserver refreshes packet pointers after USB buffer growth
+PASS: ddserver decodes USB packet lengths explicitly
+PASS: ddserver rejects implausible camera packet lengths
+PASS: ddserver can trace 0x9203 USB timing
+PASS: ddserver staging preserves the authoritative procd init files
+PASS: ddserver cannot exhaust a finite crash retry budget
+PASS: captured JPEG preview uses the v21 runtime environment
+PASS: full-size JPEG endpoint streams the captured object
+PASS: full-size JPEG endpoint selects a requested SD-card image handle
+PASS: captured image browser requests a bounded SD-card JPEG list
+PASS: captured image browser streams a selected thumbnail
+PASS: bridge lists recent JPEG metadata without retaining image blobs
+PASS: image browser supports the full field-session JPEG handle range
+PASS: image browser avoids per-photo metadata scans while live view is running
+PASS: bridge streams thumbnails by object handle
+PASS: full-size JPEG endpoint serializes object downloads
+PASS: full-size JPEG endpoint forwards the binary stream without buffering it
+PASS: NEF endpoint requests the latest raw object
+PASS: NEF endpoint forwards the raw stream without buffering it
+PASS: bridge can select a recent NEF object
+PASS: bridge reuses chunk streaming for NEF delivery
+PASS: full-size JPEG pauses live view during object transfer
+PASS: full-size JPEG restores live view after object transfer
+PASS: full-size JPEG uses an object-transfer timeout
+PASS: full-size JPEG validates the completed object size
+PASS: full-size JPEG uses PTP partial-object transfer
+PASS: full-size JPEG uses the measured 4MB transfer sweet spot
+PASS: small full-size JPEG uses one bounded transfer chunk
+PASS: full-size JPEG uses the measured live-view pause
+PASS: full-size JPEG reuses the object selected by captured preview
+PASS: small full-size JPEG is requested as one bounded chunk
+PASS: full-size JPEG is delivered without a tmp image file
+PASS: full-size JPEG streams chunks directly to HTTP
+PASS: full-size JPEG response closes before live-view restoration
+PASS: full-size JPEG measures PTP wire time separately
+PASS: full-size JPEG measures socket write time separately
+PASS: full-size JPEG records per-chunk latency
+PASS: full-size JPEG validates JPEG boundaries before publish
+PASS: full-size viewer uses the captured object endpoint
+PASS: UI keeps live view for AF and SHOT
+PASS: UI does not stop live view before AF or SHOT
+PASS: UI has an automatic recovery loop
+PASS: WebSocket failures trigger recovery without refresh
+PASS: STOP disables client recovery before requesting server shutdown
+PASS: browser recovery honors a global server-side STOP
+PASS: portrait alias fences recovery before STOP
+PASS: landscape alias fences recovery before STOP
+PASS: Android reconnect checks authoritative server intent
+PASS: Android live view exposes a low-frequency frame ID pulse
+PASS: frame ID pulse is bounded before persistent diagnostic logging
+PASS: frame pulse correlates displayed FPS with the latest received frame ID
+PASS: frame pulse identifies display queue pressure
+PASS: Android reconnect resumes only while live view remains requested
+PASS: opening Android live view never issues live-on
+PASS: embedded Android WebView cannot start camera live view
+PASS: Android WebView only attaches to an authoritative live session
+PASS: Flutter starts with camera state unknown instead of optimistic ready
+PASS: Flutter starts with live view disabled
+PASS: Flutter startup cannot automatically request live view
+PASS: Flutter synchronizes authoritative runtime status
+PASS: Flutter ignores stale live transition completions
+PASS: transient status loss does not tear down a healthy stream
+PASS: camera API models authoritative runtime state
+PASS: STOP and RESET outrank queued camera work
+PASS: Flutter probes the captured thumbnail immediately and tolerates SD-card commit variance
+PASS: Flutter decodes the full JPEG before swapping it into the animated viewer
+PASS: Flutter loads the bounded SD-card image list
+PASS: Flutter image viewer navigates to older images
+PASS: Flutter image viewer navigates to newer images
+PASS: Flutter image viewer defers full JPEG transfer until requested
+PASS: frame failures trigger recovery without refresh
+PASS: degraded backend status triggers recovery without refresh
+PASS: shot preview uses the captured JPEG endpoint
+PASS: external shutter detection uses the camera event endpoint
+PASS: external shutter detection compares event sequence numbers
+PASS: external shutter probe does not download the preview JPEG
+PASS: UI can measure capture-to-image-load latency
+PASS: UI can measure PTP-start-to-image-load latency
+PASS: end-to-end latency uses the selected pipeline timestamp
+PASS: shot preview is rendered in the live-view corner
+PASS: full-size shot viewer requests portrait mode
+PASS: shot viewer requests a portrait orientation lock
+PASS: shot viewer requests full-screen presentation
+PASS: shot viewer requests full-screen immediately from the thumbnail tap
+PASS: shot viewer displays the thumbnail immediately while the full JPEG loads
+PASS: mobile viewer streams the full JPEG directly into the image element
+PASS: portrait viewer gives the JPEG long edge three-percent side margins
+PASS: portrait viewer preserves the D810 JPEG aspect ratio
+PASS: tapping the full-size JPEG returns to live view
+PASS: shot preview retries while the camera finishes saving
+PASS: live-view AF/shutter contract checks completed
+RESULT PASS
+TEST test-opal-camera-loop-contract.ps1
+PASS: Opal autonomous camera loop contract
+RESULT PASS
+TEST test-opal-outbox-puller.ps1
+PASS: outbox puller lock ownership and recovery contract
+RESULT PASS
+TEST test-opal-boot-watch.ps1
+PASS: Opal boot watcher contract
+RESULT PASS
+TEST test-opal-log-checkpoint.ps1
+PASS: live deferral, force deduplication, changed-log snapshot, and manifest integrity
+RESULT PASS

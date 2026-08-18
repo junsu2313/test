@@ -1,0 +1,5 @@
+sdk.dir=C:\\Android
+flutter.sdk=C:\\flutter-sdk-ascii
+flutter.buildMode=release
+flutter.versionName=0.3.0-field.2
+flutter.versionCode=20260816

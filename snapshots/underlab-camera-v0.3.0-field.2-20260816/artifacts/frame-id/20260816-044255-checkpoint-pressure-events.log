@@ -1,0 +1,5 @@
+measurement_started=2026-08-16T04:42:58.3533460+09:00
+pressure_started=2026-08-16T04:43:18.3682229+09:00
+pressure_ended=2026-08-16T04:43:18.4999078+09:00
+pressure_elapsed_ms=132
+checkpoint_output=Unable to negotiate with 100.123.59.97 port 22: no matching host key type found. Their offer: ssh-rsa

@@ -1,0 +1,39 @@
+# Credentials and machine-local configuration
+.env
+.env.*
+!.env.example
+**/local.properties
+**/key.properties
+*.pem
+*.ppk
+*.jks
+*.keystore
+/artifacts/
+
+# Build products and dependencies
+**/build/
+**/.dart_tool/
+**/.gradle/
+**/node_modules/
+**/.wrangler/
+**/__pycache__/
+**/*.pyc
+
+# Local captures, archives, SDKs, and diagnostics
+CAMERA/
+local-archives/
+chaos-results/
+openwrt-sdk-*/
+*.NEF
+*.nef
+*.tar
+*.tar.xz
+*.ipk
+*.mipsel_24kc
+*.mips_siflower
+
+# OS and editor state
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
